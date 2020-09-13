@@ -28,6 +28,9 @@ interface StartArgs {
 }
 
 export class PageVideoCapture {
+
+  state = {firstFrameTimeStamp: null};
+
   public static async start({
     page,
     savePath,
@@ -86,6 +89,8 @@ export class PageVideoCapture {
       const durationSeconds =
         currentFrame.timestamp - this._previousFrame.timestamp;
       this._writer.write(this._previousFrame.data, durationSeconds);
+    } else {
+      this.state = {...this.state, firstFrameTimeStamp: currentFrame.timestamp};
     }
 
     this._previousFrame = currentFrame;
@@ -98,6 +103,10 @@ export class PageVideoCapture {
     debug('write final frame');
     const durationSeconds = stoppedTimestamp - this._previousFrame.timestamp;
     this._writer.write(this._previousFrame.data, durationSeconds);
+  }
+
+  public getCurrentTimeStampOfVideo() {
+    return this._previousFrame.timestamp - this.state.firstFrameTimeStamp;
   }
 
   public async stop(): Promise<void> {
