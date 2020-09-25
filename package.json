@@ -35,7 +35,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "fs-extra": "^9.0.1",
     "playwright-core": "^1.2.0",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.1"
   },
   "devDependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.0.20",
