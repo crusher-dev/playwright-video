@@ -31,7 +31,7 @@
     "url": "https://github.com/qawolf/playwright-video/issues"
   },
   "dependencies": {
-    "debug": "*",
+    "debug": "4.2.0",
     "fluent-ffmpeg": "^2.1.2",
     "fs-extra": "^9.0.1",
     "playwright-core": "^1.2.0",
