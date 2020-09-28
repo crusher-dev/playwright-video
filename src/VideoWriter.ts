@@ -6,6 +6,7 @@ import { dirname } from 'path';
 import { PassThrough } from 'stream';
 import { ensureFfmpegPath } from './utils';
 import { CaptureOptions } from './PageVideoCapture';
+import * as fs from "fs";
 
 const debug = Debug('pw-video:VideoWriter');
 
@@ -39,30 +40,26 @@ export class VideoWriter extends EventEmitter {
     debug(`write video to ${savePath}`);
 
     this._endedPromise = new Promise((resolve, reject) => {
-      ffmpeg({ source: this._stream, priority: 20 })
-        .videoCodec('libx264')
-        .inputFormat('image2pipe')
-        .inputFPS(this._framesPerSecond)
-        .outputOptions('-preset ultrafast')
-        .outputOptions('-pix_fmt yuv420p')
-        .on('error', (e) => {
-          this.emit('ffmpegerror', e.message);
 
-          // do not reject as a result of not having frames
-          if (
-            !this._receivedFrame &&
-            e.message.includes('pipe:0: End of file')
-          ) {
+      const writeStream = fs.createWriteStream(savePath + ".raw");
+      this._stream.pipe(writeStream);
+      this._stream.on('error', function (e) {
+            this.emit('ffmpegerror', e.message);
+
+            // do not reject as a result of not having frames
+            if (
+              !this._receivedFrame &&
+              e.message.includes('pipe:0: End of file')
+            ) {
+              resolve();
+              return;
+            }
+
+            reject(`pw-video: error capturing video: ${e.message}`);
+      });
+      this._stream.on('end', function () {
             resolve();
-            return;
-          }
-
-          reject(`pw-video: error capturing video: ${e.message}`);
-        })
-        .on('end', () => {
-          resolve();
-        })
-        .save(savePath);
+      });
     });
   }
 
