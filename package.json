@@ -34,7 +34,7 @@
     "debug": "*",
     "fluent-ffmpeg": "^2.1.2",
     "fs-extra": "^9.0.1",
-    "playwright-core": "^1.2.0",
+    "playwright-core": "^1.4.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
@@ -52,7 +52,7 @@
     "jest": "^26.1.0",
     "np": "^6.3.0",
     "playwright": "^1.2.0",
-    "playwright-core": "^1.2.0",
+    "playwright-core": "^1.4.0",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.1.1",
